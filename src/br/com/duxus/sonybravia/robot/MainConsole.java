@@ -17,9 +17,6 @@ public class MainConsole {
 	private final static String ACAO_DESLIGAR = "desligar";
 	
 	public static void main(String[] args){
-		main2("-ip 10.2.0.152 -mac bc:85:56:4f:66:27 -iniciar".split(" "));
-	}
-	public static void main2(String[] args){
 		//Processa os parâmetros
 		if( args.length != 5 ){
 			die("Argumentos inválidos!\nUso: java -jar sonybraviaremote.jar -ip [IP_DA_TV] -mac [MAC_ADDRESS_DA_TV] -[iniciar|desligar]");

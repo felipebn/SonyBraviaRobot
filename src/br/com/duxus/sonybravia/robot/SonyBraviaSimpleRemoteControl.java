@@ -1,7 +1,6 @@
 package br.com.duxus.sonybravia.robot;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import java.util.Scanner;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
@@ -49,6 +48,8 @@ public class SonyBraviaSimpleRemoteControl {
 			this.powerOn();
 		}
 		this.register();
+		//Aguarda alguns segundos após o registro
+		try{Thread.sleep(3 * 1000);}catch(Exception e){}
 	}
 	
 	/**
@@ -89,7 +90,7 @@ public class SonyBraviaSimpleRemoteControl {
 				throw new Exception("Erro no comando: " + response.getStatusLine() );
 			}
 			//Sempre espera um segundo para o comando retornar
-			try{Thread.sleep(espera);}catch(Exception e){}
+			Thread.sleep(espera);
 		}catch(Exception e){
 			e.printStackTrace();
 			throw new RuntimeException("Não foi possível enviar o comando para a TV",e);
@@ -199,7 +200,13 @@ public class SonyBraviaSimpleRemoteControl {
 	 * @return PIN inserido pelo usuário
 	 */
 	private String inputPin(){
-		return JOptionPane.showInputDialog(new JFrame(), "Digite o PIN exibido na TV:").toString();
+		Scanner console = new Scanner(System.in);
+		try{
+			System.out.println( "Digite o PIN exibido na TV:" );
+			return console.nextLine();
+		}finally{
+			console.close();
+		}
 	}
 
 
