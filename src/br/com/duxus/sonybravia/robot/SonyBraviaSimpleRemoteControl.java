@@ -1,5 +1,6 @@
 package br.com.duxus.sonybravia.robot;
 
+import java.net.InetAddress;
 import java.util.Scanner;
 
 import org.apache.commons.codec.binary.Base64;
@@ -103,7 +104,10 @@ public class SonyBraviaSimpleRemoteControl {
 	 * será obtido o cookie para realizar as outras operações.
 	 */
 	public void register(){
-		final String payload = "{\"method\":\"actRegister\",\"params\":[{\"clientid\":\"java_pc_remote\",\"nickname\":\"Java PC Remote\",\"level\":\"private\"},[{\"value\":\"yes\",\"function\":\"WOL\"}]],\"id\":8,\"version\":\"1.0\"}";
+		final String payload = String.format(
+				"{\"method\":\"actRegister\",\"params\":[{\"clientid\":\"java_sonybraviarobot:%s\",\"nickname\":\"Java SonyBraviaRobot (%s)\",\"level\":\"private\"},[{\"value\":\"yes\",\"function\":\"WOL\"}]],\"id\":8,\"version\":\"1.0\"}",
+				getDeviceName(),getDeviceName()
+				);
 		final String url = getUrl("/sony/accessControl");
 		System.out.println( "Iniciando registro na TV..." );
 		try{
@@ -209,5 +213,15 @@ public class SonyBraviaSimpleRemoteControl {
 		}
 	}
 
-
+	/**
+	 * Nome do computador para registrar na TV
+	 */
+	private String getDeviceName(){
+		try{
+			return InetAddress.getLocalHost().getHostName();
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new RuntimeException("Não foi possível determinar o nome do device para registro",e);
+		}
+	}
 }
