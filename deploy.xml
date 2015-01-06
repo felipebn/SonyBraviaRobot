@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="sonybraviarobot" basedir="." default="jar">
+
+	<property name="lib.dir" value="lib"/>
+	<property name="src.dir" value="src"/>
+	<property name="build.dir" value="bin"/>
+	<property name="deployed-folder" value="deployed"/>
+	<property name="jarname" value="sonybraviarobot"/>
+	
+	<path id="libs">
+		<fileset dir="${lib.dir}">
+			<patternset includes="**/*.jar,**/*.zip" />
+		</fileset>
+	</path>
+	
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+	</target>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${build.dir}"/>
+	</target>	
+	
+	<target name="compile" depends="init">
+		<!-- Compile the java code -->
+		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="libs" verbose="false" debug="true" debuglevel="lines,vars,source" target="1.6" source="1.6" >
+		</javac>
+	</target>	
+	
+	<target name="jar" depends="compile">
+		<tstamp><format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" /></tstamp>
+		<!-- Build the jar file -->
+		<jar basedir="${build.dir}" destfile="${deployed-folder}/${jarname}.jar">
+		    <manifest>
+		    	<attribute name="Main-Class" value="br.com.duxus.sonybravia.robot.MainConsole"/>
+		    	<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Built-Date" value="${TODAY}"/>
+    		</manifest>
+			<zipgroupfileset dir="${lib.dir}" includes="**/*.jar" />
+		</jar>
+	</target>
+	
+</project>
