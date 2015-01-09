@@ -1,6 +1,7 @@
 package br.com.duxus.sonybravia.robot;
 
 import java.net.InetAddress;
+import java.net.NoRouteToHostException;
 import java.util.Scanner;
 
 import org.apache.commons.codec.binary.Base64;
@@ -162,6 +163,15 @@ public class SonyBraviaSimpleRemoteControl {
 			System.out.println( "Status da TV: " + status );
 			
 			return "active".equals( status );
+		}catch(NoRouteToHostException e){
+			/*
+			 * Se ocorrer "no route to host" quer dizer que provavelmente está OFF.
+			 * Depois de um tempo em "desligada" (standby) a TV perde o IP de conexão.
+			 */
+			System.out.println( "Não foi possível obter o status da TV pela API" );
+			System.out.println( "Status da TV: DESLIGADA" );
+			
+			return false;
 		}catch(Exception e){
 			e.printStackTrace();
 			throw new RuntimeException("Não foi possível verificar o status da TV",e);
